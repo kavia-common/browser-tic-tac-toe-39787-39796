@@ -1,104 +1,241 @@
-/* CSS Variables for Theme Management */
+/* Ocean Professional Theme */
 :root {
-  /* Light theme colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --text-primary: #282c34;
-  --text-secondary: #61dafb;
-  --border-color: #e9ecef;
-  --button-bg: #007bff;
-  --button-text: #ffffff;
+  --primary: #2563EB;
+  --secondary: #F59E0B; /* also success */
+  --error: #EF4444;
+  --background: #f9fafb;
+  --surface: #ffffff;
+  --text: #111827;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 6px 18px rgba(17, 24, 39, 0.08);
+  --radius: 14px;
+
+  --grid-gap: 12px;
+  --square-size: 110px;
 }
 
-[data-theme="dark"] {
-  /* Dark theme colors */
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #282c34;
-  --text-primary: #ffffff;
-  --text-secondary: #61dafb;
-  --border-color: #404040;
-  --button-bg: #0056b3;
-  --button-text: #ffffff;
+@media (min-width: 480px) {
+  :root { --square-size: 120px }
+}
+@media (min-width: 640px) {
+  :root { --square-size: 130px }
 }
 
-.App {
+* { box-sizing: border-box; }
+
+html, body, #root {
+  height: 100%;
+  background: var(--background);
+}
+
+.ocean-app {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  color: var(--text);
+}
+
+.ocean-header {
   text-align: center;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  min-height: 100vh;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 32px 16px 8px;
+  background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(249,250,251,1));
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.ocean-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.ocean-subtitle {
+  margin: 8px 0 0;
+  color: rgba(17,24,39,0.7);
+  font-size: 14px;
 }
 
-.App-header {
-  background-color: var(--bg-secondary);
-  min-height: 100vh;
+.ocean-main {
+  display: grid;
+  place-items: center;
+  padding: 24px 16px 36px;
+}
+
+.ocean-footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 12px;
+  color: rgba(17,24,39,0.55);
+}
+
+/* Card */
+.game-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 20px;
+  width: 100%;
+  max-width: 460px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  border: 1px solid rgba(17,24,39,0.06);
+}
+
+.game-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(17,24,39,0.10);
+}
+
+/* Status pill */
+.status-row {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: var(--text-primary);
-  transition: background-color 0.3s ease;
-  position: relative;
+  margin-bottom: 16px;
 }
 
-.App-link {
-  color: var(--text-secondary);
-  transition: color 0.3s ease;
-}
-
-.theme-toggle {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: var(--button-bg);
-  color: var(--button-text);
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
   font-size: 14px;
   font-weight: 600;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, rgba(37,99,235,0.12), rgba(255,255,255,1));
+  color: var(--text);
+  border: 1px solid rgba(37,99,235,0.25);
+  box-shadow: var(--shadow-sm);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.pill-turn::before {
+  content: "⏳";
+}
+.pill-win {
+  background: linear-gradient(135deg, rgba(245,158,11,0.18), rgba(255,255,255,1));
+  border-color: rgba(245,158,11,0.4);
+}
+.pill-win::before {
+  content: "🏆";
+}
+.pill-draw {
+  background: linear-gradient(135deg, rgba(17,24,39,0.10), rgba(255,255,255,1));
+  border-color: rgba(17,24,39,0.2);
+}
+.pill-draw::before {
+  content: "🤝";
+}
+
+/* Board */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, var(--square-size));
+  grid-template-rows: repeat(3, var(--square-size));
+  gap: var(--grid-gap);
+  margin: 6px auto 18px;
+  justify-content: center;
+}
+
+/* Square */
+.square {
+  width: var(--square-size);
+  height: var(--square-size);
+  background: linear-gradient(180deg, #ffffff 0%, #f7fafc 100%);
+  border: 1px solid rgba(17,24,39,0.08);
+  border-radius: 18px;
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  place-items: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.14s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.theme-toggle:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  opacity: 0.9;
+.square:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(17,24,39,0.10);
+  border-color: rgba(37,99,235,0.35);
 }
 
-.theme-toggle:active {
+.square:active {
   transform: translateY(0);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.square:disabled {
+  cursor: not-allowed;
+  opacity: 0.95;
 }
 
-/* Responsive design for mobile */
-@media (max-width: 768px) {
-  .theme-toggle {
-    top: 10px;
-    right: 10px;
-    padding: 8px 16px;
-    font-size: 12px;
-  }
+.square-winning {
+  border-color: rgba(245,158,11,0.7);
+  background: linear-gradient(180deg, rgba(245,158,11,0.12), #ffffff);
+  box-shadow: 0 10px 22px rgba(245,158,11,0.25);
+}
+
+/* Mark */
+.mark {
+  font-size: 56px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--primary);
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.18s ease, transform 0.18s ease, color 0.2s ease;
+  user-select: none;
+}
+
+.mark-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.square .mark {
+  /* X and O colors */
+}
+
+.square .mark:contains("O") { /* fallback if not supported, we don't rely on it */
+  color: var(--secondary);
+}
+
+/* Use data-content trick to color letters differently without JS */
+.square .mark::after {
+  content: attr(data-content);
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.btn-reset {
+  background: linear-gradient(135deg, rgba(37,99,235,0.14), rgba(37,99,235,0.08));
+  color: var(--primary);
+  border: 1px solid rgba(37,99,235,0.35);
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.14s ease, box-shadow 0.2s ease, background 0.25s ease, color 0.25s ease;
+}
+
+.btn-reset:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(37,99,235,0.18);
+  background: linear-gradient(135deg, rgba(37,99,235,0.2), rgba(37,99,235,0.12));
+}
+
+.btn-reset:active {
+  transform: translateY(0);
+}
+
+/* Accessibility focus */
+button:focus-visible {
+  outline: 3px solid rgba(37,99,235,0.6);
+  outline-offset: 2px;
+  border-radius: 14px;
 }
